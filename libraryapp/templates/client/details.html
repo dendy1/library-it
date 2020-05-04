@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block page_name %}
+    Информация о клиенте
+{% endblock page_name %}
+
+{% block extra_breadcrumbs %}
+       <li><a href="/client/{{ client.id }}/edit/">Редактировать клиента</a></li>
+       <li><a href="/client/{{ client.id }}/delete/">Удалить клиента</a></li>
+{% endblock extra_breadcrumbs %}
+
+{% block content %}
+    <section class="sec-padding">
+        <div class="container">
+            <div class="col-md-6">
+                <h4>Имя : {{ client.first_name }}</h4>
+                <h4>Фамилия : {{ client.last_name }}</h4>
+                <h4>Дата рождения : {{ client.date_of_birth }}</h4>
+                <h4>Штраф : {{ client.fine }}</h4>
+            </div>
+
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <label for="books">Выданные книги</label>
+                    <table name="books" class="sp-cart">
+                        <tbody>
+                        <tr>
+                            <th style="width:15%;">Книга</th>
+                            <th style="width:10%;">Автор</th>
+                            <th style="width:20%;">Дата выдачи</th>
+                            <th style="width:20%;">Дата возвращения</th>
+                            <th style="width:10%;">Статус</th>
+                            <th style="width:5%;">Цена</th>
+                            <th style="width:10%;"></th>
+                            <th style="width:10%;"></th>
+                        </tr>
+
+                        {% for card_item in card_items %}
+                            <tr>
+                                <td class="pro-title"><a href="/book/{{ card_item.book.id }}/details/">
+                                    <h6>{{ card_item.book.title }}</h6></a></td>
+
+                                <td class="pro-title"><a href="/author/{{ card_item.book.author.id }}/details/">
+                                    <h6>{{ card_item.book.author }}</h6></a></td>
+
+                                <td class="pro-title"><h6>{{ card_item.given_date }}</h6></td>
+
+                                <td class="pro-title"><h6>{{ card_item.returned_date }}</h6></td>
+
+                                <td class="pro-title"><h6>{{ card_item.status }}</h6></td>
+
+                                <td class="pro-title"><h6>{{ card_item.book.cost }}</h6></td>
+
+                                <td><a class="btn btn-green-dark btn-small"
+                                       href="/extend/{{ card_item.id }}/">Продлить срок</a></td>
+
+                                <td><a class="btn btn-red-dark btn-small"
+                                       href="/client/{{ card_item.client.id }}/fine/{{ card_item.book.cost }}/">Назначить
+                                    штраф за книгу</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
